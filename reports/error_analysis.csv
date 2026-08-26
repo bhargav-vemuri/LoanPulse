@@ -1,0 +1,5 @@
+Target,FP_count,FN_count,HighConf_errors
+next_3m_delinquency_flag,13217,85478,57318
+next_6m_delinquency_flag,10884,134135,93829
+next_12m_default_flag,0,3248,2772
+next_12m_prepayment_flag,0,412665,411023

@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "source": "PROJECT-DERIVED",
+    "description": "Feature availability classification to prevent target leakage."
+  },
+  "features": {
+    "orig_fico": "STATIC",
+    "orig_ltv": "STATIC",
+    "orig_dti": "STATIC",
+    "orig_upb": "STATIC",
+    "orig_interest_rate": "STATIC",
+    "prop_state": "STATIC",
+    "prop_type": "STATIC",
+    "loan_purpose": "STATIC",
+    "first_payment_date": "STATIC",
+    "curr_upb": "AVAILABLE_AT_T",
+    "rem_months": "AVAILABLE_AT_T",
+    "curr_status": "AVAILABLE_AT_T",
+    "mod_flag": "AVAILABLE_AT_T",
+    "canonical_state": "AVAILABLE_AT_T",
+    "zb_code": "AVAILABLE_AT_T",
+    "reliability_score": "AVAILABLE_AT_T",
+    "reliability_band": "AVAILABLE_AT_T",
+    "trajectory_dpd_3m_max": "HISTORICAL_SAFE",
+    "trajectory_dpd_6m_max": "HISTORICAL_SAFE",
+    "trajectory_consecutive_delinq": "HISTORICAL_SAFE",
+    "trajectory_state_transitions_6m": "HISTORICAL_SAFE",
+    "trajectory_balance_reduction_6m": "HISTORICAL_SAFE",
+    "next_3m_delinquency_flag": "TARGET_DERIVED",
+    "next_6m_delinquency_flag": "TARGET_DERIVED",
+    "next_12m_default_flag": "TARGET_DERIVED",
+    "next_12m_prepayment_flag": "TARGET_DERIVED",
+    "next_state": "TARGET_DERIVED",
+    "zb_date": "FUTURE_LEAKAGE",
+    "net_sales": "FUTURE_LEAKAGE",
+    "actual_loss": "FUTURE_LEAKAGE"
+  }
+}

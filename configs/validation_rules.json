@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "source": "PROJECT-DERIVED \u2014 NOT ORGANIZER PROVIDED",
+    "description": "Validation rules based on Freddie Mac SFLLD definitions and mortgage logic."
+  },
+  "rules": [
+    {
+      "rule_id": "VAL_001",
+      "description": "Negative remaining months to maturity",
+      "severity": "CRITICAL",
+      "fields": ["Remaining Months to Legal Maturity"],
+      "condition": "rem_months < 0",
+      "rationale": "Remaining maturity cannot be negative."
+    },
+    {
+      "rule_id": "VAL_002",
+      "description": "Current UPB exceeds Original UPB without modification",
+      "severity": "MEDIUM",
+      "fields": ["Current Actual UPB", "Original UPB", "Modification Flag"],
+      "condition": "curr_upb > orig_upb and mod_flag != 'Y'",
+      "rationale": "Without a modification or negative amortization, the current balance should not exceed original."
+    },
+    {
+      "rule_id": "VAL_003",
+      "description": "Missing FICO score",
+      "severity": "LOW",
+      "fields": ["Classic FICO\u00ae"],
+      "condition": "orig_fico is null or orig_fico == 9999",
+      "rationale": "Borrower lacks a standard credit score, indicating potential data quality or non-traditional underwriting."
+    },
+    {
+      "rule_id": "VAL_004",
+      "description": "Missing Original LTV",
+      "severity": "LOW",
+      "fields": ["Original Loan-to-Value (LTV)"],
+      "condition": "orig_ltv is null or orig_ltv == 999",
+      "rationale": "LTV is a critical underwriting variable."
+    },
+    {
+      "rule_id": "VAL_005",
+      "description": "Zero Balance Code assigned but UPB > 0",
+      "severity": "CRITICAL",
+      "fields": ["Zero Balance Code", "Current Actual UPB"],
+      "condition": "zb_code is not null and curr_upb > 0",
+      "rationale": "A loan cannot be terminated while maintaining a positive unpaid principal balance."
+    },
+    {
+      "rule_id": "VAL_006",
+      "description": "Delinquency transition gap",
+      "severity": "HIGH",
+      "fields": ["Current Loan Delinquency Status", "lag_delinquency_status"],
+      "condition": "curr_status_num - lag_status_num > 1",
+      "rationale": "Loan jumped multiple delinquency buckets in a single month (e.g., Current to 60 DPD)."
+    },
+    {
+      "rule_id": "VAL_007",
+      "description": "Reporting month before origination",
+      "severity": "CRITICAL",
+      "fields": ["Period", "First Payment Date"],
+      "condition": "period < first_payment_date",
+      "rationale": "A loan cannot have performance records before its first payment date."
+    },
+    {
+      "rule_id": "VAL_008",
+      "description": "Observation after Terminal State",
+      "severity": "CRITICAL",
+      "fields": ["lag_zb_code"],
+      "condition": "lag_zb_code is not null",
+      "rationale": "A loan should not have performance records in the months following a terminal event (Zero Balance Code)."
+    }
+  ]
+}

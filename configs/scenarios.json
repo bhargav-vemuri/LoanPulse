@@ -1,0 +1,42 @@
+[
+    {
+        "scenario_id": "DELINQ_SHOCK_1_MONTH",
+        "name": "Delinquency Shock (+1 Month)",
+        "description": "Simulates an immediate 1-month deterioration in delinquency status.",
+        "affected_features": ["curr_status", "canonical_state", "trajectory_consecutive_delinq", "trajectory_dpd_6m_max"],
+        "transformation": "curr_status += 1; trajectory_consecutive_delinq += 1",
+        "bounds": {"curr_status": {"max": 99}},
+        "assumptions": "PROJECT_DEFINED. Assumes no intervention from servicer.",
+        "supported_targets": ["next_3m_delinquency_flag", "next_6m_delinquency_flag", "next_12m_default_flag", "next_12m_prepayment_flag"]
+    },
+    {
+        "scenario_id": "RECOVERY_TO_CURRENT",
+        "name": "Full Cure to Current",
+        "description": "Simulates a delinquent loan instantly curing to CURRENT status.",
+        "affected_features": ["curr_status", "canonical_state", "trajectory_consecutive_delinq"],
+        "transformation": "curr_status = 0; trajectory_consecutive_delinq = 0",
+        "bounds": {"curr_status": {"min": 0}},
+        "assumptions": "PROJECT_DEFINED. Retains historical 6m DPD max, only resetting current streak.",
+        "supported_targets": ["next_3m_delinquency_flag", "next_6m_delinquency_flag", "next_12m_default_flag", "next_12m_prepayment_flag"]
+    },
+    {
+        "scenario_id": "FICO_STRESS_50_PTS",
+        "name": "FICO Deterioration (-50 Points)",
+        "description": "Simulates a 50 point drop in origination FICO.",
+        "affected_features": ["orig_fico"],
+        "transformation": "orig_fico -= 50",
+        "bounds": {"orig_fico": {"min": 300}},
+        "assumptions": "PROJECT_DEFINED. Used as proxy for unobserved borrower credit deterioration.",
+        "supported_targets": ["next_3m_delinquency_flag", "next_6m_delinquency_flag", "next_12m_default_flag", "next_12m_prepayment_flag"]
+    },
+    {
+        "scenario_id": "LTV_STRESS_10_PCT",
+        "name": "Equity Erosion (+10% LTV)",
+        "description": "Simulates a 10 percentage point increase in original LTV, proxying a property value drop.",
+        "affected_features": ["orig_ltv"],
+        "transformation": "orig_ltv += 10",
+        "bounds": {"orig_ltv": {"max": 200}},
+        "assumptions": "PROJECT_DEFINED. Does not dynamically recompute current LTV if current UPB amortized.",
+        "supported_targets": ["next_3m_delinquency_flag", "next_6m_delinquency_flag", "next_12m_default_flag", "next_12m_prepayment_flag"]
+    }
+]
