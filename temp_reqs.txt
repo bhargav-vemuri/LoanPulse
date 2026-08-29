@@ -1,8 +1,0 @@
-﻿pandas==2.3.3
-numpy
-scikit-learn
-lightgbm==4.7.0
-shap==0.52.0
-joblib
-streamlit==1.51.0
-lifelines

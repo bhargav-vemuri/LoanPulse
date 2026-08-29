@@ -141,17 +141,34 @@ if len(filtered) > 0:
             
         # 6. Transition Intelligence
         st.subheader("Transition Intelligence")
-        st.write(f"**Observed Transition:** `{trans['previous_state']}` → `{trans['current_state']}`")
-        st.write(f"**Expected Probability (Portfolio-Wide):** {trans.get('probability', 0.0)*100:.2f}%")
-        st.write(f"**Transition Surprise (bits):** {trans.get('surprise', 0.0):.2f}")
+        st.write(f"**Observed Transition:** `{trans.get('previous_state', 'N/A')}` → `{trans.get('current_state', 'N/A')}`")
+        
+        prob = trans.get('probability')
+        surp = trans.get('surprise')
+        if prob is None or pd.isna(prob):
+            st.write("**Expected Probability (Portfolio-Wide):** N/A (New Origination / No History)")
+            st.write("**Transition Surprise (bits):** N/A")
+        else:
+            st.write(f"**Expected Probability (Portfolio-Wide):** {prob*100:.2f}%")
+            st.write(f"**Transition Surprise (bits):** {surp:.2f}")
         
         # 9. Scenario Explorer
         st.markdown("---")
         st.subheader("Scenario Explorer")
         st.caption("Model-sensitivity counterfactual — not a causal forecast.")
-        st.write(f"**Baseline 12m Default Risk:** {scen.get('baseline_12m_default_risk', 0.0)*100:.2f}%")
-        st.write(f"**Scenario (Delinquency Shock) Risk:** {scen.get('scenario_12m_default_risk', 0.0)*100:.2f}%")
-        st.write(f"**Absolute Delta:** {scen.get('max_delta_12m_default', 0.0)*100:+.2f} percentage points")
+        
+        base_risk = scen.get('baseline_12m_default_risk')
+        scen_risk = scen.get('scenario_12m_default_risk')
+        delta_risk = scen.get('max_delta_12m_default')
+        
+        if base_risk is None or pd.isna(base_risk):
+            st.write("**Baseline 12m Default Risk:** N/A")
+            st.write("**Scenario (Delinquency Shock) Risk:** N/A")
+            st.write("**Absolute Delta:** N/A")
+        else:
+            st.write(f"**Baseline 12m Default Risk:** {base_risk*100:.2f}%")
+            st.write(f"**Scenario (Delinquency Shock) Risk:** {scen_risk*100:.2f}%")
+            st.write(f"**Absolute Delta:** {delta_risk*100:+.2f} percentage points")
         
         # 11. Evidence Transparency
         with st.expander("View Raw JSON Evidence Object"):
