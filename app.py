@@ -107,10 +107,10 @@ if len(filtered) > 0:
             st.subheader("Trajectory Visualization")
             st.write(f"**Recent 6-Month State History:**")
             st.code(traj['recent_states'])
-            st.write(f"- Maximum DPD (6M): {traj['max_dpd_6m']}")
-            st.write(f"- Consecutive Delinquency Months: {traj['consecutive_delinquent_months']}")
-            st.write(f"- Observed Transitions (6M): {traj['observed_transitions_6m']}")
-            st.write(f"- Balance Reduction (6M): {traj['balance_reduction_6m']:.2f}%")
+            st.write(f"- Maximum DPD (6M): {traj.get('max_6m_dpd', 'N/A')}")
+            st.write(f"- Consecutive Delinquency Months: {traj.get('consecutive_delinq', 'N/A')}")
+            st.write(f"- Observed Transitions (6M): {traj.get('observed_transitions_6m', 'N/A')}")
+            st.write(f"- Balance Reduction (6M): {traj.get('balance_reduction_6m', 'N/A')}")
             
         st.markdown("---")
         row2_col1, row2_col2 = st.columns(2)
@@ -120,9 +120,9 @@ if len(filtered) > 0:
             st.subheader("Reliability Intelligence")
             st.warning("*Reliability measures evidence quality, not credit risk.*")
             st.write(f"**Score:** {rel['score']} ({rel['band']})")
-            if len(rel['validation_warnings']) > 0:
+            if len(rel.get('validation_warnings', [])) > 0:
                 st.write("**Validation Warnings:**")
-                for w in rel['validation_warnings']:
+                for w in rel.get('validation_warnings', []):
                     st.write(f"- {w}")
             else:
                 st.write("No severe deterministic validation warnings.")
@@ -130,23 +130,28 @@ if len(filtered) > 0:
         # 8. Anomaly Panel
         with row2_col2:
             st.subheader("Anomaly Intelligence")
-            st.write(f"**Severity:** {anom['severity']}")
-            st.write(f"**Statistical Isolation Score (Behavioral):** {anom['isolation_score']:.3f}")
-            st.write(f"**Data Anomaly (Deterministic):** {anom['data_anomaly']}")
+            st.info("*Anomaly detects rare multidimensional data behaviors, independently of credit risk.*")
+            st.write(f"**Severity:** {anom.get('severity', 'N/A')}")
+            st.write(f"**Statistical Isolation Score (Behavioral):** {anom.get('isolation_score', 0.0):.3f}")
+            
+            if len(anom.get('top_anomalous_features', [])) > 0:
+                st.write("**Top Anomalous Dimensions:**")
+                for f in anom.get('top_anomalous_features', []):
+                    st.write(f"- {f}")
             
         # 6. Transition Intelligence
         st.subheader("Transition Intelligence")
         st.write(f"**Observed Transition:** `{trans['previous_state']}` → `{trans['current_state']}`")
-        st.write(f"**Expected Probability (Portfolio-Wide):** {trans['empirical_probability']*100:.2f}%")
-        st.write(f"**Surprise Factor (-log2 p):** {trans['surprise']:.2f} bits")
+        st.write(f"**Expected Probability (Portfolio-Wide):** {trans.get('probability', 0.0)*100:.2f}%")
+        st.write(f"**Transition Surprise (bits):** {trans.get('surprise', 0.0):.2f}")
         
         # 9. Scenario Explorer
         st.markdown("---")
         st.subheader("Scenario Explorer")
         st.caption("Model-sensitivity counterfactual — not a causal forecast.")
-        st.write(f"**Baseline 12m Default Risk:** {scen['baseline_12m_default_risk']*100:.2f}%")
-        st.write(f"**Scenario (Delinquency Shock) Risk:** {scen['scenario_12m_default_risk']*100:.2f}%")
-        st.write(f"**Absolute Delta:** {scen['max_delta_12m_default']*100:+.2f} percentage points")
+        st.write(f"**Baseline 12m Default Risk:** {scen.get('baseline_12m_default_risk', 0.0)*100:.2f}%")
+        st.write(f"**Scenario (Delinquency Shock) Risk:** {scen.get('scenario_12m_default_risk', 0.0)*100:.2f}%")
+        st.write(f"**Absolute Delta:** {scen.get('max_delta_12m_default', 0.0)*100:+.2f} percentage points")
         
         # 11. Evidence Transparency
         with st.expander("View Raw JSON Evidence Object"):

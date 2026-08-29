@@ -82,12 +82,52 @@ A dark-mode Streamlit dashboard (`app.py`) operates as a zero-compute presentati
 - **Censoring**: 12-month future targets are subject to administrative right-censoring at the edge of the 2025 panel limit.
 - **LLM Context**: The final LLM integration runs purely on deterministic template fallbacks because a live API key was unavailable within the isolated agentic execution sandbox.
 
-## 17. Reproducibility
-The pipeline is fully frozen. Execute the Streamlit UI directly:
+## 17. Reproducibility & Deployment
+
+The analytical pipeline is fully frozen. The application operates using the pre-computed serialized artifacts in `data/processed/`.
+
+### Run Locally
+
+To run the reviewer dashboard on your local machine, ensure you have Python 3.11 or later installed (Python 3.14 is also supported locally via updated dependencies).
+
 ```bash
+# Clone the repository
+git clone https://github.com/your-org/LoanPulse.git
+cd LoanPulse
+
+# Create a clean virtual environment
+python -m venv .venv
+
+# Activate the environment
+# Windows:
+.\.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+
+# Install requirements
 pip install -r requirements.txt
+
+# Run the Streamlit application
 streamlit run app.py
 ```
 
+### Deployment
+
+The repository is deployment-ready for standard Streamlit hosting platforms (e.g., Streamlit Community Cloud).
+
+**Supported Hosting Environment:**
+- **Python Version:** 3.11 (Recommended for stability and pre-built dependency wheels)
+- **Framework:** Streamlit `1.52.0`
+- **Dependencies:** All dependencies are explicitly declared in `requirements.txt`.
+
+**Repository Configuration for Cloud Deployment:**
+1. Connect your GitHub repository to your Streamlit Community Cloud account.
+2. Set the Main file path to: `app.py`.
+3. Set the Python version to `3.11` in the Advanced Settings (if available).
+4. No API keys or secrets are required for the Deterministic Reviewer fallback. The `.env` is deliberately excluded.
+
 ## 18. AI-Assisted Development
-DeepMind Antigravity was utilized extensively across all 10 phases to architect the separation between risk, transition, reliability, anomaly, and scenario components. The AI strictly enforced chronological leakage bounds, resolved complex Pandas/LightGBM serialization defects, built the Hallucination Guard, and orchestrated all empirical validation logic autonomously.
+DeepMind Antigravity was utilized extensively across all 10 phases to architect the separation between risk, 
+transition, reliability, anomaly, and scenario components. The AI strictly enforced chronological leakage bounds, 
+resolved complex Pandas/LightGBM serialization defects, built the Hallucination Guard, and orchestrated all empirical 
+validation logic autonomously.
