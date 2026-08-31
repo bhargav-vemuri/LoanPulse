@@ -1,5 +1,21 @@
-# Loan Performance Intelligence Engine
+# LoanPulse - Loan Performance Intelligence Engine
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit)](https://loanpulse-yg01.onrender.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/bhargav-vemuri/LoanPulse)
+
+> A production-ready machine learning workspace for orthogonal mortgage risk decomposition.
+
+## 🎯 Quick Start: Live Demo & Evaluation Cases
+
+You can interact with the fully deployed Loan Performance Intelligence Workspace here:
+**[Live Demo: loanpulse-yg01.onrender.com](https://loanpulse-yg01.onrender.com)**
+
+### Recommended Evaluation Cases
+For the best demonstration of the engine's capability to isolate true credit risk, bizarre anomalies, and data reliability, we strongly recommend evaluating the following loan IDs in the dashboard:
+- 🔍 **F22Q20274635**
+- 🔍 **F23Q40094248**
+
+---
 ## 1. Problem
 Mortgage risk analysis traditionally treats predicting borrower default as a static, binary classification problem. Reviewers are handed a single probability score based on snapshot data, without any actionable context about how the loan arrived at that point, the reliability of the underlying evidence, or the loan's sensitivity to macroeconomic stressors.
 
