@@ -108,7 +108,7 @@ To run the reviewer dashboard on your local machine, ensure you have Python 3.11
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/LoanPulse.git
+git clone https://github.com/bhargav-vemuri/LoanPulse.git
 cd LoanPulse
 
 # Create a clean virtual environment
